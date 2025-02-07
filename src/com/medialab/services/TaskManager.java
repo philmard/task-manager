@@ -11,13 +11,20 @@ import com.medialab.models.Reminder;
 public class TaskManager {
     private List<Task> tasks;
     private List<Category> categories;
+    private List<PriorityLevel> priorities;
 
     public TaskManager() {
         tasks = new ArrayList<>();
         categories = new ArrayList<>();
+        priorities = new ArrayList<>();
     }
 
     // ------------------------------ Task Management Methods ------------------------------
+    
+    public List<Task> getTasks() {
+        return tasks;
+    }
+    
     public void addTask(Task task) {
         tasks.add(task);
     }
@@ -30,10 +37,6 @@ public class TaskManager {
         tasks.remove(task);
     }
 
-    public List<Task> getTasks() {
-        return tasks;
-    }
-
     // Load tasks when the app starts
     public void setTasks(List<Task> loadedTasks) {
         if (loadedTasks != null) {
@@ -42,8 +45,16 @@ public class TaskManager {
     }
     
     // ------------------------------ Category Management Methods ------------------------------
+    
+    public List<Category> getCategories() {
+        return categories;
+    }
+    
     public void addCategory(Category category) {
-        categories.add(category);
+    	// Check if the category already exists
+        if (!getCategories().contains(category)) {
+            categories.add(category);
+        }
     }
 
     public void deleteCategory(Category category) {
@@ -61,10 +72,12 @@ public class TaskManager {
                 task.getCategory().setTitle(updatedCategory.getTitle());  // Update the category title in task
             }
         }
-    }
-
-    public List<Category> getCategories() {
-        return categories;
+        
+        // Update the priority in the priorities list
+        int index = categories.indexOf(oldCategory);
+        if (index != -1) {
+            categories.set(index, updatedCategory);
+        }
     }
     
     public Category findCategoryByTitle(String title) {
@@ -79,17 +92,58 @@ public class TaskManager {
     // ------------------------------ Priority Management Methods ------------------------------
 
     public List<PriorityLevel> getPriorities() {
-        List<PriorityLevel> priorities = new ArrayList<>();
-        for (Task task : tasks) {
-            if (task.getPriority() != null && !priorities.contains(task.getPriority())) {
-                priorities.add(task.getPriority());
-            }
-        }
         return priorities;
     }
     
-    // ------------------------------ Reminder Management Methods ------------------------------
+    public void addPriority(PriorityLevel priority) {
+        // Check if the priority already exists
+        if (!getPriorities().contains(priority)) {
+            priorities.add(priority);
+        }
+    }
+    
+    public void deletePriority(PriorityLevel priority) {
+        // Find the default priority
+        PriorityLevel defaultPriority = findPriorityByTitle("Default");
 
+        // Update all tasks with the deleted priority to the default priority
+        for (Task task : tasks) {
+            if (task.getPriority() != null && task.getPriority().equals(priority)) {
+                task.setPriority(defaultPriority);
+            }
+        }
+
+        // Remove the priority from the list
+        getPriorities().remove(priority);
+    }
+    
+    public void updatePriority(PriorityLevel oldPriority, PriorityLevel updatedPriority) {
+        // Update the priority in all tasks that use the old priority
+        for (Task task : tasks) {
+            if (task.getPriority() != null && task.getPriority().equals(oldPriority)) {
+                task.setPriority(updatedPriority);
+            }
+        }
+        
+        // Update the priority in the priorities list
+        int index = priorities.indexOf(oldPriority);
+        if (index != -1) {
+            priorities.set(index, updatedPriority);
+        }
+    }
+    
+    public PriorityLevel findPriorityByTitle(String title) {
+        for (PriorityLevel priority : getPriorities()) {
+            if (priority.getTitle().equals(title)) {
+                return priority;
+            }
+        }
+        return null;
+    }
+    
+    // ------------------------------ Reminder Management Methods ------------------------------
+    
+    // (!) DIFFERENT FROM getCategories and getPriorities (!)
     public List<Reminder> getReminders() {
         List<Reminder> reminders = new ArrayList<>();
         for (Task task : tasks) {

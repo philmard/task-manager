@@ -3,24 +3,24 @@ package com.medialab.models;
 import java.util.Objects;
 
 public class PriorityLevel {
-    private String name;
+    private String title;
 
-    public PriorityLevel(String name) { this.name = name; }
+    public PriorityLevel(String title) { this.title = title; }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         PriorityLevel priority = (PriorityLevel) obj;
-        return Objects.equals(name, priority.name);
+        return Objects.equals(title, priority.title);
     }
 
     @Override
-    public int hashCode() { return Objects.hash(name); }
+    public int hashCode() { return Objects.hash(title); }
 
     @Override
-    public String toString() { return name; }
+    public String toString() { return title; }
 }

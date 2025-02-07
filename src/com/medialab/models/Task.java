@@ -44,10 +44,28 @@ public class Task {
     public void setStatus(String status) { this.status = status; }
 
     public List<Reminder> getReminders() { return reminders; }
-    public void addReminder(Reminder reminder) { this.reminders.add(reminder); } // Add reminder method
+    public void addReminder(Reminder reminder) { this.reminders.add(reminder); }
 
     @Override
     public String toString() {
-        return title + " (" + status + ")";
+        String categoryText = (category != null) ? category.getTitle() : "No Category";
+        String priorityText = (priority != null) ? priority.getTitle() : "No Priority";
+        String deadlineText = (deadline != null) ? deadline.toString() : "No Deadline";
+        String descriptionText = (description != null && !description.isEmpty()) ? description : "No Description";
+        
+        // Convert reminders list to a readable string format
+        String remindersText = reminders.isEmpty() ? "No Reminders" :
+                reminders.stream()
+                        .map(Reminder::toString)
+                        .reduce((r1, r2) -> r1 + ", " + r2)
+                        .orElse("");
+
+        return title + "\n" +
+               "Status: " + status + "\n" +
+               "Category: " + categoryText + "\n" +
+               "Priority: " + priorityText + "\n" +
+               "Deadline: " + deadlineText + "\n" +
+               "Description: " + descriptionText + "\n" +
+               "Reminders: " + remindersText;
     }
 }

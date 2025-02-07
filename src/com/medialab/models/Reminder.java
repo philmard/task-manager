@@ -22,7 +22,7 @@ public class Reminder {
 
     @Override
     public String toString() {
-        return "Reminder on " + date + ": " + message;
+        return (date + ": " + message);
     }
 
     @Override

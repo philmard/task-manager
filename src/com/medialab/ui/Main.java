@@ -4,6 +4,7 @@ import com.medialab.services.DataManager;
 
 import com.medialab.models.Task;
 import com.medialab.models.Category;
+import com.medialab.models.PriorityLevel;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -41,7 +42,8 @@ public class Main extends Application {
         if (mainController != null) {
             List<Task> tasksToSave = mainController.getTasks();
             List<Category> categoriesToSave = mainController.getCategories();
-            dataManager.saveData(tasksToSave, categoriesToSave);
+            List<PriorityLevel> prioritiesToSave = mainController.getPriorities();
+            dataManager.saveData(tasksToSave, categoriesToSave, prioritiesToSave);
         }
     }
 

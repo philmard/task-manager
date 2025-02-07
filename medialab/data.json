@@ -1,63 +1,113 @@
 {
   "tasks": [
     {
-      "title": "t1",
+      "title": "task1",
       "description": "",
       "status": "Open",
+      "priority": "Default",
       "reminders": []
     },
     {
-      "title": "asdasdasd",
+      "title": "task2",
       "description": "",
       "status": "Open",
+      "category": "category1",
+      "priority": "Default",
       "reminders": []
     },
     {
-      "title": "asd",
+      "title": "task3",
       "description": "",
       "status": "Open",
-      "deadline": "2025-02-20",
+      "priority": "Default",
+      "deadline": "2025-02-08",
+      "reminders": [
+        {
+          "date": "2025-02-07",
+          "message": "reminder1"
+        }
+      ]
+    },
+    {
+      "title": "task4",
+      "description": "",
+      "status": "Open",
+      "category": "klklkl",
+      "priority": "Default",
+      "reminders": []
+    },
+    {
+      "title": "task5",
+      "description": "",
+      "status": "Open",
+      "priority": "Default",
+      "reminders": []
+    },
+    {
+      "title": "task6",
+      "description": "",
+      "status": "Open",
+      "priority": "Default",
+      "reminders": []
+    },
+    {
+      "title": "asdasd",
+      "description": "",
+      "status": "Open",
+      "priority": "Default",
       "reminders": []
     },
     {
       "title": "sdsd",
       "description": "",
+      "status": "Open",
+      "priority": "Default",
+      "reminders": []
+    },
+    {
+      "title": "task11",
+      "description": "",
+      "status": "Postponed",
+      "category": "klklkl",
+      "priority": "prio9999",
+      "reminders": []
+    },
+    {
+      "title": "new_task",
+      "description": "dkslfskjdlfksjlfksjdlksjlfsjdlfkjslkfjsldkfjslkdfjslkdfjlskdfjlskfjlskdfjdslkfjsldkfjl",
       "status": "In Progress",
-      "deadline": "2025-02-07",
-      "reminders": []
-    },
-    {
-      "title": "dd",
-      "description": "",
-      "status": "Open",
-      "deadline": "2025-02-08",
-      "reminders": []
-    },
-    {
-      "title": "NOT_FFFF_BUT_oooo",
-      "description": "",
-      "status": "Completed",
-      "deadline": "2025-02-13",
-      "reminders": []
-    },
-    {
-      "title": "test123",
-      "description": "",
-      "status": "Open",
-      "category": "fffffffffffffffffffffff",
-      "reminders": []
-    },
-    {
-      "title": "kjhkj",
-      "description": "",
-      "status": "Open",
-      "category": "fffffffffffffffffffffff",
-      "reminders": []
+      "category": "cat5",
+      "priority": "prio9999",
+      "deadline": "2025-03-01",
+      "reminders": [
+        {
+          "date": "2025-02-28",
+          "message": "thermosifwnas kleinw"
+        },
+        {
+          "date": "2025-02-22",
+          "message": "kleise to fourno"
+        }
+      ]
     }
   ],
   "categories": [
     {
-      "title": "fffffffffffffffffffffff"
+      "title": "category1"
+    },
+    {
+      "title": "klklkl"
+    },
+    {
+      "title": "cat5"
+    }
+  ],
+  "priorities": [
+    {
+      "title": "Default"
+    },
+    {
+      "title": "prio9999"
     }
   ]
 }

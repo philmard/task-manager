@@ -27,7 +27,7 @@ public class DataManager {
                 .create();
     }
 
-    public void saveData(List<Task> tasks, List<Category> categories) {
+    public void saveData(List<Task> tasks, List<Category> categories, List<PriorityLevel> priorities) {
         try (FileWriter writer = new FileWriter(FILE_PATH)) {
             JsonObject jsonData = new JsonObject();
 
@@ -37,6 +37,14 @@ public class DataManager {
                 JsonObject categoryObject = new JsonObject();
                 categoryObject.addProperty("title", category.getTitle());
                 categoryArray.add(categoryObject);
+            }
+
+            // 🔹 Convert priorities to JSON
+            JsonArray priorityArray = new JsonArray();
+            for (PriorityLevel priority : priorities) {
+                JsonObject priorityObject = new JsonObject();
+                priorityObject.addProperty("title", priority.getTitle());
+                priorityArray.add(priorityObject);
             }
 
             // 🔹 Convert tasks to JSON (with all fields)
@@ -51,7 +59,7 @@ public class DataManager {
                 taskObject.addProperty("category", task.getCategory() != null ? task.getCategory().getTitle() : null);
                 
                 // Store priority as a string
-                taskObject.addProperty("priority", task.getPriority() != null ? task.getPriority().getName() : null);
+                taskObject.addProperty("priority", task.getPriority() != null ? task.getPriority().getTitle() : null);
                 
                 // Store deadline
                 taskObject.addProperty("deadline", task.getDeadline() != null ? task.getDeadline().toString() : null);
@@ -72,6 +80,7 @@ public class DataManager {
             // 🔹 Store everything in JSON file
             jsonData.add("tasks", taskArray);
             jsonData.add("categories", categoryArray);
+            jsonData.add("priorities", priorityArray);
 
             gson.toJson(jsonData, writer);
         } catch (IOException e) {
@@ -93,6 +102,15 @@ public class DataManager {
                 }
             }
 
+            // 🔹 Load priorities
+            JsonArray priorityArray = jsonData.getAsJsonArray("priorities");
+            if (priorityArray != null) {
+                for (JsonElement priorityElement : priorityArray) {
+                    String title = priorityElement.getAsJsonObject().get("title").getAsString();
+                    taskManager.addPriority(new PriorityLevel(title));
+                }
+            }
+
             // 🔹 Load tasks
             JsonArray taskArray = jsonData.getAsJsonArray("tasks");
             if (taskArray != null) {
@@ -109,11 +127,11 @@ public class DataManager {
                             : null;
                     Category category = categoryTitle != null ? taskManager.findCategoryByTitle(categoryTitle) : null;
 
-                    // Retrieve priority using constructor instead of valueOf()
+                    // Retrieve priority by title
                     String priorityName = taskObject.has("priority") && !taskObject.get("priority").isJsonNull()
                             ? taskObject.get("priority").getAsString()
                             : null;
-                    PriorityLevel priority = priorityName != null ? new PriorityLevel(priorityName) : null;
+                    PriorityLevel priority = priorityName != null ? taskManager.findPriorityByTitle(priorityName) : null;
 
                     // Retrieve deadline
                     LocalDate deadline = taskObject.has("deadline") && !taskObject.get("deadline").isJsonNull()
