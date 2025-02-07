@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.medialab.ui.MainController" spacing="15" alignment="CENTER">
+    
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+    
+    <!-- Task Statistics -->
+    <HBox spacing="10" alignment="CENTER">
+        <Label text="Total Tasks:" />
+        <Label fx:id="totalTasksLabel" text="0" />
+
+        <Label text="Completed:" />
+        <Label fx:id="completedTasksLabel" text="0" />
+
+        <Label text="Delayed:" />
+        <Label fx:id="delayedTasksLabel" text="0" />
+
+        <Label text="Due in 7 days:" />
+        <Label fx:id="dueSoonTasksLabel" text="0" />
+    </HBox>
+
+    <!-- Lists Section -->
+    <HBox spacing="15" alignment="CENTER">
+        <!-- Task List -->
+        <VBox alignment="CENTER">
+            <Label text="Tasks" />
+            <ListView fx:id="tasksListView" maxHeight="250" prefWidth="200"/>
+        </VBox>
+        
+        <!-- Category List -->
+        <VBox alignment="CENTER">
+            <Label text="Categories" />
+            <ListView fx:id="categoryListView" maxHeight="250" prefWidth="200"/>
+        </VBox>
+
+        <!-- Priority List -->
+        <VBox alignment="CENTER">
+            <Label text="Priorities" />
+            <ListView fx:id="priorityListView" maxHeight="250" prefWidth="200"/>
+        </VBox>
+        
+        <!-- Reminder List -->
+        <VBox alignment="CENTER">
+            <Label text="Reminders" />
+            <ListView fx:id="reminderListView" maxHeight="250" prefWidth="200"/>
+        </VBox>
+    </HBox>
+
+    <!-- Input Fields Grid -->
+    <GridPane hgap="15" vgap="10" alignment="CENTER">
+        <Label text="Title:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <TextField fx:id="taskTitleField" promptText="Task Title" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+        <Label text="Description:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <TextField fx:id="taskDescriptionField" promptText="Task Description" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+        <!-- Category ComboBox -->
+        <Label text="Category:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <ComboBox fx:id="taskCategoryComboBox" promptText="Select Category" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+        <!-- Priority ComboBox -->
+        <Label text="Priority:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+        <ComboBox fx:id="taskPriorityComboBox" promptText="Select Priority" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+        <Label text="Deadline:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+        <DatePicker fx:id="taskDeadlinePicker" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+        <Label text="Status:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+        <ComboBox fx:id="taskStatusComboBox" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+        
+        <Label text="Category Title:" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+        <TextField fx:id="categoryTitleField" promptText="Category Title" GridPane.rowIndex="0" GridPane.columnIndex="3"/>
+    </GridPane>
+
+    <!-- Buttons Section -->
+    <HBox spacing="30" alignment="CENTER">
+        
+        <!-- Task Buttons Column -->
+        <VBox spacing="10" alignment="CENTER">
+            <Label text="Task Actions" style="-fx-font-weight: bold;" />
+            <HBox spacing="5" alignment="CENTER">
+                <Button text="Add Task" onAction="#onAddTask"/>
+                <Button text="Delete Task" onAction="#onDeleteTask"/>
+            </HBox>
+            <HBox spacing="5" alignment="CENTER">
+                <Button text="Update Task" onAction="#onUpdateTask"/>
+                <Button text="Clear Task Inputs" onAction="#clearTaskInputFields"/>
+            </HBox>
+        </VBox>
+
+        <!-- Category Buttons Column -->
+        <VBox spacing="10" alignment="CENTER">
+            <Label text="Category Actions" style="-fx-font-weight: bold;" />
+            <HBox spacing="5" alignment="CENTER">
+                <Button text="Add Category" onAction="#onAddCategory"/>
+                <Button text="Delete Category" onAction="#onDeleteCategory"/>
+            </HBox>
+            <HBox spacing="5" alignment="CENTER">
+                <Button text="Update Category" onAction="#onUpdateCategory"/>
+                <Button text="Clear Category Inputs" onAction="#clearCategoryInputFields"/>
+            </HBox>
+        </VBox>
+
+    </HBox>
+
+</VBox>

@@ -1,0 +1,35 @@
+# Ignore Eclipse project files
+.classpath
+.project
+.settings/
+
+# Ignore compiled Java class files
+bin/
+out/
+
+# Ignore Maven or Gradle build files
+target/
+build/
+
+# Ignore IntelliJ IDEA project files
+*.iml
+.idea/
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore log files
+*.log
+
+# Ignore dependency libraries
+lib/
+
+# Ignore generated files
+*.class
+*.jar
+
+# Ignore IDE workspace-related files
+.vscode/
+*.swp
+*.swo
