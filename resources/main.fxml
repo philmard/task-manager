@@ -25,136 +25,156 @@
         <Label text="Due in 7 days:" />
         <Label fx:id="dueSoonTasksLabel" text="0" />
     </HBox>
-
+	
     <!-- Lists Section -->
     <HBox spacing="15" alignment="CENTER">
         <!-- Task List -->
-        <VBox alignment="CENTER">
-            <Label text="Tasks" />
+        <VBox>
+            <Label text="Tasks" style="-fx-font-weight: bold;"/>
             <HBox spacing="5" alignment="CENTER">
 		        <TextField fx:id="searchTitleField" promptText="Search by Title" />
-		        <ComboBox fx:id="searchCategoryComboBox" promptText="Search by Category" />
-		        <ComboBox fx:id="searchPriorityComboBox" promptText="Search by Priority" />
+		        <ComboBox fx:id="searchCategoryComboBox" promptText="Category" />
+		        <ComboBox fx:id="searchPriorityComboBox" promptText="Priority" />
 		        <Button text="Search" onAction="#onSearchTasks" />
-		        <Button text="Clear Search" onAction="#onClearSearch" />
+		        <Button text="Clear" onAction="#onClearSearch" />
 	    	</HBox>
             <ListView fx:id="tasksListView" maxHeight="250" prefWidth="200"/>
+            
+            
+            <Label text="Task Actions" style="-fx-font-weight: bold;" />
+            
+            <GridPane vgap="10">
+            <!-- All Inputs for Tasks -->
+            
+            <Label text="Title:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+	        <TextField fx:id="taskTitleField" promptText="Task Title" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+	
+	        <Label text="Description:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+	        <TextField fx:id="taskDescriptionField" promptText="Task Description" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+	
+	        <Label text="Category:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+	        <ComboBox fx:id="taskCategoryComboBox" promptText="Select Category" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+	
+	        <Label text="Priority:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+	        <ComboBox fx:id="taskPriorityComboBox" promptText="Select Priority" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+	
+	        <Label text="Deadline:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+	        <DatePicker fx:id="taskDeadlinePicker" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+	
+	        <Label text="Status:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+	        <ComboBox fx:id="taskStatusComboBox" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+	        </GridPane>
+	        
+	        <VBox VBox.vgrow="ALWAYS"/>
+	        <!-- All Buttons for Tasks -->
+        	<VBox spacing="10" alignment="CENTER">
+	            
+	            <HBox spacing="5" alignment="CENTER">
+	                <Button text="Add Task" onAction="#onAddTask"/>
+	                <Button text="Delete Task" onAction="#onDeleteTask"/>
+	            </HBox>
+	            <HBox spacing="5" alignment="CENTER">
+	                <Button text="Update Task" onAction="#onUpdateTask"/>
+	                <Button text="Clear Task Inputs" onAction="#clearTaskInputFields"/>
+	            </HBox>
+	        </VBox>
+	        
         </VBox>
+        
+        <Separator orientation="VERTICAL"/>
         
         <!-- Category List -->
-        <VBox alignment="CENTER">
-            <Label text="Categories" />
-            <ListView fx:id="categoryListView" maxHeight="250" prefWidth="200"/>
+        <VBox>
+            <Label text="Categories" style="-fx-font-weight: bold;"/>
+            <ListView fx:id="categoryListView" maxHeight="300" prefWidth="200"/>
+            
+            <Label text="Category Actions" style="-fx-font-weight: bold;" />
+            
+            <GridPane vgap="10">
+            <!-- All Inputs for Categories -->
+            <Label text="Category Title:" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+        	<TextField fx:id="categoryTitleField" promptText="Category Title" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+        	</GridPane>
+        	
+        	<VBox VBox.vgrow="ALWAYS"/>
+        	<!-- All Buttons for Categories -->
+	        <VBox spacing="10" alignment="CENTER">
+	            
+	            <HBox spacing="5" alignment="CENTER">
+	                <Button text="Add Category" onAction="#onAddCategory"/>
+	                <Button text="Delete Category" onAction="#onDeleteCategory"/>
+	            </HBox>
+	            <HBox spacing="5" alignment="CENTER">
+	                <Button text="Update Category" onAction="#onUpdateCategory"/>
+	                <Button text="Clear Category Inputs" onAction="#clearCategoryInputFields"/>
+	            </HBox>
+	        </VBox>
         </VBox>
+        
+        <Separator orientation="VERTICAL"/>
 
         <!-- Priority List -->
-        <VBox alignment="CENTER">
-            <Label text="Priorities" />
-            <ListView fx:id="priorityListView" maxHeight="250" prefWidth="200"/>
+        <VBox>
+            <Label text="Priorities" style="-fx-font-weight: bold;"/>
+            <ListView fx:id="priorityListView" maxHeight="300" prefWidth="200"/>
+            
+            <Label text="Priority Actions" style="-fx-font-weight: bold;" />
+            
+            <GridPane vgap="10">
+            <!-- All Inputs for Priorities -->
+            <Label text="Priority Title:" GridPane.rowIndex="0" GridPane.columnIndex="3"/>
+        	<TextField fx:id="priorityTitleField" promptText="Priority Title" GridPane.rowIndex="1" GridPane.columnIndex="3"/>
+        	</GridPane>
+        	
+        	<VBox VBox.vgrow="ALWAYS"/>
+        	<!-- All Buttons for Priorities -->
+	        <VBox spacing="10" alignment="CENTER">
+	            
+	            <HBox spacing="5" alignment="CENTER">
+	                <Button text="Add Priority" onAction="#onAddPriority"/>
+	                <Button text="Delete Priority" onAction="#onDeletePriority"/>
+	            </HBox>
+	            <HBox spacing="5" alignment="CENTER">
+	                <Button text="Update Priority" onAction="#onUpdatePriority"/>
+	                <Button text="Clear Priority Inputs" onAction="#clearPriorityInputFields"/>
+	            </HBox>
+	        </VBox>
         </VBox>
+        
+        <Separator orientation="VERTICAL"/>
         
         <!-- Reminder List -->
-        <VBox alignment="CENTER">
-            <Label text="Reminders" />
-            <ListView fx:id="reminderListView" maxHeight="250" prefWidth="200"/>
-        </VBox>
-    </HBox>
-
-    <!-- Input Fields Grid -->
-    <GridPane hgap="15" vgap="10" alignment="CENTER">
-        <Label text="Title:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-        <TextField fx:id="taskTitleField" promptText="Task Title" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-
-        <Label text="Description:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-        <TextField fx:id="taskDescriptionField" promptText="Task Description" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-
-        <!-- Category ComboBox -->
-        <Label text="Category:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-        <ComboBox fx:id="taskCategoryComboBox" promptText="Select Category" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
-
-        <!-- Priority ComboBox -->
-        <Label text="Priority:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
-        <ComboBox fx:id="taskPriorityComboBox" promptText="Select Priority" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
-
-        <Label text="Deadline:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
-        <DatePicker fx:id="taskDeadlinePicker" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
-
-        <Label text="Status:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
-        <ComboBox fx:id="taskStatusComboBox" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
-        
-        <Label text="Category Title:" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
-        <TextField fx:id="categoryTitleField" promptText="Category Title" GridPane.rowIndex="0" GridPane.columnIndex="3"/>
-        
-        <Label text="Priority Title:" GridPane.rowIndex="0" GridPane.columnIndex="4"/>
-        <TextField fx:id="priorityTitleField" promptText="Priority Title" GridPane.rowIndex="0" GridPane.columnIndex="5"/>
-        
-        <Label text="Reminder Message:" GridPane.rowIndex="0" GridPane.columnIndex="6"/>
-        <TextField fx:id="reminderMessageField" promptText="Reminder Message" GridPane.rowIndex="0" GridPane.columnIndex="7"/>
-        
-        <!-- Reminder ComboBox -->
-        <Label text="Reminder Date" GridPane.rowIndex="1" GridPane.columnIndex="6"/>
-        <ComboBox fx:id="reminderDateComboBox" promptText="Select Type" GridPane.rowIndex="1" GridPane.columnIndex="7"/>
-        
-        <!-- Specific Day Reminder -->
-        <Label text="Specific Reminder Date:" GridPane.rowIndex="2" GridPane.columnIndex="6"/>
-        <DatePicker fx:id="reminderDatePicker" GridPane.rowIndex="2" GridPane.columnIndex="7"/>
-    </GridPane>
-
-    <!-- Buttons Section -->
-    <HBox spacing="30" alignment="CENTER">
-        
-        <!-- Task Buttons Column -->
-        <VBox spacing="10" alignment="CENTER">
-            <Label text="Task Actions" style="-fx-font-weight: bold;" />
-            <HBox spacing="5" alignment="CENTER">
-                <Button text="Add Task" onAction="#onAddTask"/>
-                <Button text="Delete Task" onAction="#onDeleteTask"/>
-            </HBox>
-            <HBox spacing="5" alignment="CENTER">
-                <Button text="Update Task" onAction="#onUpdateTask"/>
-                <Button text="Clear Task Inputs" onAction="#clearTaskInputFields"/>
-            </HBox>
-        </VBox>
-
-        <!-- Category Buttons Column -->
-        <VBox spacing="10" alignment="CENTER">
-            <Label text="Category Actions" style="-fx-font-weight: bold;" />
-            <HBox spacing="5" alignment="CENTER">
-                <Button text="Add Category" onAction="#onAddCategory"/>
-                <Button text="Delete Category" onAction="#onDeleteCategory"/>
-            </HBox>
-            <HBox spacing="5" alignment="CENTER">
-                <Button text="Update Category" onAction="#onUpdateCategory"/>
-                <Button text="Clear Category Inputs" onAction="#clearCategoryInputFields"/>
-            </HBox>
-        </VBox>
-        
-        <!-- Priority Buttons Column -->
-        <VBox spacing="10" alignment="CENTER">
-            <Label text="Priority Actions" style="-fx-font-weight: bold;" />
-            <HBox spacing="5" alignment="CENTER">
-                <Button text="Add Priority" onAction="#onAddPriority"/>
-                <Button text="Delete Priority" onAction="#onDeletePriority"/>
-            </HBox>
-            <HBox spacing="5" alignment="CENTER">
-                <Button text="Update Priority" onAction="#onUpdatePriority"/>
-                <Button text="Clear Priority Inputs" onAction="#clearPriorityInputFields"/>
-            </HBox>
-        </VBox>
-        
-        <!-- Reminder Buttons Column -->
-        <VBox spacing="10" alignment="CENTER">
+        <VBox>
+            <Label text="Reminders" style="-fx-font-weight: bold;"/>
+            <ListView fx:id="reminderListView" maxHeight="300" prefWidth="200"/>
+            
             <Label text="Reminder Actions" style="-fx-font-weight: bold;" />
-            <HBox spacing="5" alignment="CENTER">
-                <Button text="Add Reminder" onAction="#onAddReminder"/>
-                <Button text="Delete Reminder" onAction="#onDeleteReminder"/>
-            </HBox>
-            <HBox spacing="5" alignment="CENTER">
-                <Button text="Update Reminder" onAction="#onUpdateReminder"/>
-                <Button text="Clear Reminder Inputs" onAction="#clearReminderInputFields"/>
-            </HBox>
+            
+            <GridPane vgap="10">
+            <!-- All Inputs for Reminders -->
+            <Label text="Reminder Message:" GridPane.rowIndex="0" GridPane.columnIndex="4"/>
+	        <TextField fx:id="reminderMessageField" promptText="Reminder Message" GridPane.rowIndex="1" GridPane.columnIndex="4"/>
+	        
+	        <Label text="Reminder Date" GridPane.rowIndex="2" GridPane.columnIndex="4"/>
+	        <ComboBox fx:id="reminderDateComboBox" promptText="Select Type" GridPane.rowIndex="3" GridPane.columnIndex="4"/>
+	        
+	        <Label text="Specific Reminder Date:" GridPane.rowIndex="4" GridPane.columnIndex="4"/>
+	        <DatePicker fx:id="reminderDatePicker" GridPane.rowIndex="5" GridPane.columnIndex="4"/>
+	        </GridPane>
+	        
+	        <VBox VBox.vgrow="ALWAYS"/>
+	        <!-- All Buttons for Reminders -->
+	        <VBox spacing="10" alignment="CENTER">
+	            
+	            <HBox spacing="5" alignment="CENTER">
+	                <Button text="Add Reminder" onAction="#onAddReminder"/>
+	                <Button text="Delete Reminder" onAction="#onDeleteReminder"/>
+	            </HBox>
+	            <HBox spacing="5" alignment="CENTER">
+	                <Button text="Update Reminder" onAction="#onUpdateReminder"/>
+	                <Button text="Clear Reminder Inputs" onAction="#clearReminderInputFields"/>
+	            </HBox>
+	        </VBox>
         </VBox>
-
     </HBox>
-
 </VBox>

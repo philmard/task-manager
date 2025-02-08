@@ -71,24 +71,6 @@
       "category": "klklkl",
       "priority": "prio9999",
       "reminders": []
-    },
-    {
-      "title": "new_task",
-      "description": "dkslfskjdlfksjlfksjdlksjlfsjdlfkjslkfjsldkfjslkdfjslkdfjlskdfjlskfjlskdfjdslkfjsldkfjl",
-      "status": "In Progress",
-      "category": "cat5",
-      "priority": "prio9999",
-      "deadline": "2025-03-01",
-      "reminders": [
-        {
-          "date": "2025-02-28",
-          "message": "thermosifwnas kleinw"
-        },
-        {
-          "date": "2025-02-22",
-          "message": "kleise to fourno"
-        }
-      ]
     }
   ],
   "categories": [
@@ -100,6 +82,9 @@
     },
     {
       "title": "cat5"
+    },
+    {
+      "title": "asdasasda"
     }
   ],
   "priorities": [
