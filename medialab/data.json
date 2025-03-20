@@ -5,7 +5,13 @@
       "description": "",
       "status": "Open",
       "priority": "Default",
-      "reminders": []
+      "deadline": "2025-02-22",
+      "reminders": [
+        {
+          "date": "2025-02-05",
+          "message": "new reminder for task 1"
+        }
+      ]
     },
     {
       "title": "task2",
@@ -13,27 +19,20 @@
       "status": "Open",
       "category": "category1",
       "priority": "Default",
-      "reminders": []
+      "deadline": "2025-02-28",
+      "reminders": [
+        {
+          "date": "2025-02-27",
+          "message": "new reminder for task2"
+        }
+      ]
     },
     {
       "title": "task3",
       "description": "",
       "status": "Open",
       "priority": "Default",
-      "deadline": "2025-02-08",
-      "reminders": [
-        {
-          "date": "2025-02-07",
-          "message": "reminder1"
-        }
-      ]
-    },
-    {
-      "title": "task4",
-      "description": "",
-      "status": "Open",
-      "category": "klklkl",
-      "priority": "Default",
+      "deadline": "2025-02-22",
       "reminders": []
     },
     {
@@ -65,11 +64,26 @@
       "reminders": []
     },
     {
-      "title": "task11",
+      "title": "task88",
       "description": "",
-      "status": "Postponed",
-      "category": "klklkl",
-      "priority": "prio9999",
+      "status": "Completed",
+      "reminders": []
+    },
+    {
+      "title": "delayed_task",
+      "description": "delayed task description lorem ipsum",
+      "status": "Delayed",
+      "category": "category1",
+      "priority": "Default",
+      "deadline": "2025-01-28",
+      "reminders": []
+    },
+    {
+      "title": "delayed_task_2",
+      "description": "",
+      "status": "Delayed",
+      "priority": "Default",
+      "deadline": "2025-02-05",
       "reminders": []
     }
   ],
@@ -78,13 +92,7 @@
       "title": "category1"
     },
     {
-      "title": "klklkl"
-    },
-    {
       "title": "cat5"
-    },
-    {
-      "title": "asdasasda"
     }
   ],
   "priorities": [

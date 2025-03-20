@@ -7,11 +7,11 @@ import java.util.List;
 public class Task {
     private String title;
     private String description;
-    private Category category; // Category is now an object of type Category
-    private PriorityLevel priority; // Priority is now an object of type PriorityLevel
+    private Category category; // Category is an object of type Category
+    private PriorityLevel priority; // Priority is an object of type PriorityLevel
     private LocalDate deadline;
     private String status;
-    private List<Reminder> reminders; // List to store reminders
+    private List<Reminder> reminders; // List of reminders
 
     public Task(String title, String description, Category category, PriorityLevel priority, LocalDate deadline, String status) {
         this.title = title;
@@ -46,6 +46,9 @@ public class Task {
     public List<Reminder> getReminders() { return reminders; }
     public void addReminder(Reminder reminder) { this.reminders.add(reminder); }
 
+    /**
+     * Display of Tasks with all their fields also shown.
+     */
     @Override
     public String toString() {
         String categoryText = (category != null) ? category.getTitle() : "No Category";

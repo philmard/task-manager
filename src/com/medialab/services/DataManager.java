@@ -1,21 +1,29 @@
 package com.medialab.services;
 
 import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
 import com.medialab.models.*;
 
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Manages persistence operations for task management entities including Tasks, Categories,
+ * PriorityLevels, and Reminders using JSON serialization. All data is stored in a
+ * predefined file location specified by {@link #FILE_PATH}.
+ */
 public class DataManager {
     private static final String FILE_PATH = "medialab/data.json";
     private Gson gson;
-
+    
+    /**
+     * Constructs a DataManager with custom Gson configuration for LocalDate handling.
+     * Registers type adapters to properly serialize/deserialize LocalDate objects
+     * and enables pretty-printing for better JSON readability.
+     */
     public DataManager() {
         // Register custom adapters for LocalDate serialization/deserialization
         gson = new GsonBuilder()
@@ -26,12 +34,24 @@ public class DataManager {
                 .setPrettyPrinting()
                 .create();
     }
-
+    
+    /**
+     * Serializes and saves task management data to a JSON file.
+     * <p>
+     * Stores tasks with their complete structure including nested reminders, while
+     * categories and priorities are stored as independent entities. Reminders are
+     * automatically persisted through their containing Task objects.
+     *
+     * @param tasks       list of tasks to save (including their associated reminders)
+     * @param categories  list of available task categories
+     * @param priorities  list of defined priority levels
+     * @throws IOException if any I/O error occurs during file writing (caught and printed internally)
+     */
     public void saveData(List<Task> tasks, List<Category> categories, List<PriorityLevel> priorities) {
         try (FileWriter writer = new FileWriter(FILE_PATH)) {
             JsonObject jsonData = new JsonObject();
 
-            // 🔹 Convert categories to JSON
+            // Convert categories to JSON
             JsonArray categoryArray = new JsonArray();
             for (Category category : categories) {
                 JsonObject categoryObject = new JsonObject();
@@ -39,7 +59,7 @@ public class DataManager {
                 categoryArray.add(categoryObject);
             }
 
-            // 🔹 Convert priorities to JSON
+            // Convert priorities to JSON
             JsonArray priorityArray = new JsonArray();
             for (PriorityLevel priority : priorities) {
                 JsonObject priorityObject = new JsonObject();
@@ -47,7 +67,7 @@ public class DataManager {
                 priorityArray.add(priorityObject);
             }
 
-            // 🔹 Convert tasks to JSON (with all fields)
+            // Convert tasks to JSON (with all fields)
             JsonArray taskArray = new JsonArray();
             for (Task task : tasks) {
                 JsonObject taskObject = new JsonObject();
@@ -73,11 +93,10 @@ public class DataManager {
                     reminderArray.add(reminderObject);
                 }
                 taskObject.add("reminders", reminderArray);
-
                 taskArray.add(taskObject);
             }
 
-            // 🔹 Store everything in JSON file
+            // Store everything in the JSON file
             jsonData.add("tasks", taskArray);
             jsonData.add("categories", categoryArray);
             jsonData.add("priorities", priorityArray);
@@ -87,13 +106,24 @@ public class DataManager {
             e.printStackTrace();
         }
     }
-
+    
+    /**
+     * Loads and deserializes task management data from the JSON file.
+     * <p>
+     * Reconstructs the complete object hierarchy including category/priority associations
+     * and nested reminders. Loaded data is directly populated into the provided TaskManager.
+     *
+     * @param taskManager the TaskManager instance to populate with loaded data
+     * @throws IOException            if any I/O error occurs during file reading (caught and printed internally)
+     * @throws JsonParseException     if the JSON data is malformed (handled internally by Gson)
+     * @throws JsonSyntaxException    if there's a type mismatch during deserialization (handled internally by Gson)
+     */
     public void loadData(TaskManager taskManager) {
         try (FileReader reader = new FileReader(FILE_PATH)) {
             JsonObject jsonData = gson.fromJson(reader, JsonObject.class);
             if (jsonData == null) return;
 
-            // 🔹 Load categories
+            // Load categories
             JsonArray categoryArray = jsonData.getAsJsonArray("categories");
             if (categoryArray != null) {
                 for (JsonElement categoryElement : categoryArray) {
@@ -102,7 +132,7 @@ public class DataManager {
                 }
             }
 
-            // 🔹 Load priorities
+            // Load priorities
             JsonArray priorityArray = jsonData.getAsJsonArray("priorities");
             if (priorityArray != null) {
                 for (JsonElement priorityElement : priorityArray) {
@@ -111,7 +141,7 @@ public class DataManager {
                 }
             }
 
-            // 🔹 Load tasks
+            // Load tasks
             JsonArray taskArray = jsonData.getAsJsonArray("tasks");
             if (taskArray != null) {
                 for (JsonElement taskElement : taskArray) {

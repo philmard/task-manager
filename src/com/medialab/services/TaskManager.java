@@ -8,6 +8,15 @@ import com.medialab.models.PriorityLevel;
 import com.medialab.models.Task;
 import com.medialab.models.Reminder;
 
+/*
+ * Task Manager stores Tasks, Categories and Priorities in separate lists.
+ * This is done in order to allow for more flexibility in the creation and managing of Categories and Priorities.
+ * 
+ * (!) Note that neither Categories nor Priorities are tied to any specific Task necessarily.
+ * This means that they can exist independently of Tasks.
+ * 
+ * (!) Reminders, on the other hand, are always tied to a specific Task.
+ */
 public class TaskManager {
     private List<Task> tasks;
     private List<Category> categories;
@@ -19,7 +28,9 @@ public class TaskManager {
         priorities = new ArrayList<>();
     }
 
-    // ------------------------------ Task Management Methods ------------------------------
+    /*
+     * Task Management Methods
+     */
     
     public List<Task> getTasks() {
         return tasks;
@@ -29,22 +40,13 @@ public class TaskManager {
         tasks.add(task);
     }
 
-    public void updateTask(Task oldTask, Task newTask) {
-        // Update logic (you can implement logic to update the fields of tasks)
-    }
-
     public void deleteTask(Task task) {
         tasks.remove(task);
     }
-
-    // Load tasks when the app starts
-    public void setTasks(List<Task> loadedTasks) {
-        if (loadedTasks != null) {
-            this.tasks = loadedTasks;
-        }
-    }
     
-    // ------------------------------ Category Management Methods ------------------------------
+    /*
+     * Category Management Methods
+     */
     
     public List<Category> getCategories() {
         return categories;
@@ -89,7 +91,9 @@ public class TaskManager {
         return null;
     }
     
-    // ------------------------------ Priority Management Methods ------------------------------
+    /*
+     * Priority Management Methods
+     */
 
     public List<PriorityLevel> getPriorities() {
         return priorities;
@@ -141,9 +145,13 @@ public class TaskManager {
         return null;
     }
     
-    // ------------------------------ Reminder Management Methods ------------------------------
+    /*
+     * Reminder Management Methods
+     */
     
-    // (!) DIFFERENT FROM getCategories and getPriorities (!)
+    /* 
+     * Slightly different from getCategories and getPriorities
+     */
     public List<Reminder> getReminders() {
         List<Reminder> reminders = new ArrayList<>();
         for (Task task : tasks) {

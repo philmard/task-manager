@@ -11,11 +11,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class MainController {
-	// List Views
+	// List Views for Tasks, Categories, Priorities, Reminders.
     @FXML private ListView<Task> tasksListView;
     @FXML private ListView<Category> categoryListView;
     @FXML private ListView<PriorityLevel> priorityListView;
@@ -29,8 +30,8 @@ public class MainController {
     // Task Inputs
     @FXML private TextField taskTitleField;
     @FXML private TextField taskDescriptionField;
-    @FXML private ComboBox<Category> taskCategoryComboBox; // Use ComboBox for Category
-    @FXML private ComboBox<PriorityLevel> taskPriorityComboBox; // Use ComboBox for Priority
+    @FXML private ComboBox<Category> taskCategoryComboBox;
+    @FXML private ComboBox<PriorityLevel> taskPriorityComboBox;
     @FXML private DatePicker taskDeadlinePicker;
     @FXML private ComboBox<String> taskStatusComboBox;
     
@@ -45,7 +46,7 @@ public class MainController {
     @FXML private ComboBox<String> reminderDateComboBox;
     @FXML private DatePicker reminderDatePicker;
     
-    // Summary
+    // Summary (at the top of the page)
     @FXML private Label totalTasksLabel;
     @FXML private Label completedTasksLabel;
     @FXML private Label delayedTasksLabel;
@@ -54,9 +55,13 @@ public class MainController {
     private TaskManager taskManager;
 
     public void initialize() {
+    	
         taskManager = new TaskManager();
 
-        // Ensure the default priority exists
+        /*
+         * Ensure the default priority exists.
+         * On the first ever load of the app, the "Default" Priority is added. 
+         */
         PriorityLevel defaultPriority = new PriorityLevel("Default");
         if (!taskManager.getPriorities().contains(defaultPriority)) {
             taskManager.addPriority(defaultPriority);
@@ -64,6 +69,7 @@ public class MainController {
 
         // Populate the ComboBox with valid status options
         taskStatusComboBox.getItems().addAll("Open", "In Progress", "Postponed", "Completed", "Delayed");
+        // Set the default Status to "Open".
         taskStatusComboBox.setValue("Open");
 
         // Populate the Reminder ComboBox with reminder types
@@ -73,9 +79,6 @@ public class MainController {
             "One month before deadline",
             "Specific date"
         );
-
-        // Update the UI to populate all ComboBoxes and ListViews
-        updateUI();
     }
 
     public void updateUI() {
@@ -96,11 +99,53 @@ public class MainController {
         searchCategoryComboBox.getItems().setAll(taskManager.getCategories());
         searchPriorityComboBox.getItems().setAll(taskManager.getPriorities());
 
-        // Set custom cell factories and button cells for all ComboBoxes
-        // apart from Select Priority, because that should be set to "Default".
+        /* Set custom cell factories and button cells for all ComboBoxes;
+         * apart from Select Priority, because that should be set to "Default".
+         */ 
         setComboBoxPlaceholder(taskCategoryComboBox, "Select Category");
         setComboBoxPlaceholder(searchCategoryComboBox, "Search by Category");
         setComboBoxPlaceholder(searchPriorityComboBox, "Search by Priority");
+    }
+    
+    /**
+     * Checks for tasks that are not "Completed" and have passed their deadlines.
+     * Updates their status to "Delayed" and returns the count of such tasks.
+     *
+     */
+    public int checkAndUpdateDelayedTasks() {
+        LocalDate today = LocalDate.now();
+        int delayedCount = 0;
+        List<String> delayedTaskTitles = new ArrayList<>();
+
+        for (Task task : taskManager.getTasks()) {
+            if (!"Completed".equals(task.getStatus()) && task.getDeadline() != null && task.getDeadline().isBefore(today)) {
+                task.setStatus("Delayed");
+                delayedTaskTitles.add(task.getTitle()); // Collect delayed task titles
+                delayedCount++;
+            }
+        }
+
+        if (delayedCount > 0) {
+            showDelayedTasksAlert(delayedCount, delayedTaskTitles);
+        }
+
+        return delayedCount;
+    }
+    
+    /**
+     * Displays a popup alert to notify the user about the number of delayed tasks.
+     *
+     */
+    public void showDelayedTasksAlert(int delayedTasksCount, List<String> delayedTaskTitles) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Delayed Tasks");
+        alert.setHeaderText("You have " + delayedTasksCount + " delayed task(s).");
+
+        // Format the task titles for display
+        String taskList = String.join("\n", delayedTaskTitles);
+        alert.setContentText("Please review these tasks:\n" + taskList);
+
+        alert.showAndWait();
     }
 
     /**
@@ -135,13 +180,44 @@ public class MainController {
             }
         });
     }
-    
-    // -------------------------- TASKS --------------------------
 
-    public void setTasks(List<Task> tasks) {
-        taskManager.setTasks(tasks);
-        updateUI();
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
+    
+    public TaskManager getTaskManager() {
+        return taskManager;
+    }
+    
+    private void updateSummary() {
+        List<Task> tasks = taskManager.getTasks();
+        
+        int totalTasks = tasks.size();
+        int completedTasks = (int) tasks.stream().filter(t -> "Completed".equals(t.getStatus())).count();
+        int delayedTasks = (int) tasks.stream().filter(t -> "Delayed".equals(t.getStatus())).count();
+        
+        LocalDate today = LocalDate.now();
+        int dueSoonTasks = (int) tasks.stream()
+            .filter(t -> t.getDeadline() != null && !t.getDeadline().isBefore(today) && t.getDeadline().isBefore(today.plusDays(7)))
+            .count();
+
+        // Update of Labels
+        totalTasksLabel.setText(String.valueOf(totalTasks));
+        completedTasksLabel.setText(String.valueOf(completedTasks));
+        delayedTasksLabel.setText(String.valueOf(delayedTasks));
+        dueSoonTasksLabel.setText(String.valueOf(dueSoonTasks));
+    }
+    
+    /*
+     * Task Actions
+     * - Addition
+     * - Deletion
+     * - Update
+     * - Search
+     */
 
     public List<Task> getTasks() {
         return taskManager.getTasks();
@@ -294,7 +370,12 @@ public class MainController {
         taskStatusComboBox.setValue("Open");
     }
     
-    // -------------------------- CATEGORIES --------------------------
+    /*
+     * Category Actions
+     * - Addition
+     * - Deletion
+     * - Update
+     */
     public List<Category> getCategories() {
         return taskManager.getCategories();
     }
@@ -383,8 +464,12 @@ public class MainController {
     	categoryTitleField.clear();
     }
     
-    // -------------------------- PRIORITIES --------------------------
-    
+    /*
+     * Priority Actions
+     * - Addition
+     * - Deletion
+     * - Update
+     */
     public List<PriorityLevel> getPriorities() {
         return taskManager.getPriorities();
     }
@@ -482,8 +567,12 @@ public class MainController {
     	priorityTitleField.clear();
     }
     
-    // -------------------------- REMINDERS --------------------------
-    
+    /*
+     * Reminder Actions
+     * - Addition
+     * - Deletion
+     * - Update
+     */
     @FXML
     private void onAddReminder() {
         Task selectedTask = tasksListView.getSelectionModel().getSelectedItem();
@@ -596,37 +685,92 @@ public class MainController {
 
     @FXML
     private void onUpdateReminder() {
+        // Get the selected reminder from the reminderListView
         Reminder selectedReminder = reminderListView.getSelectionModel().getSelectedItem();
         if (selectedReminder == null) {
             showAlert("Error", "Please select a reminder to update.");
             return;
         }
 
-        Task selectedTask = tasksListView.getSelectionModel().getSelectedItem();
-        if (selectedTask == null) {
-            showAlert("Error", "Please select a task to update a reminder.");
+        // Find the task that contains the selected reminder
+        Task taskWithReminder = null;
+        for (Task task : taskManager.getTasks()) {
+            for (Reminder reminder : task.getReminders()) {
+                if (reminder.getMessage().equals(selectedReminder.getMessage())) {
+                    taskWithReminder = task;
+                    break;
+                }
+            }
+            if (taskWithReminder != null) {
+                break;
+            }
+        }
+
+        if (taskWithReminder == null) {
+            showAlert("Error", "No task found containing the selected reminder.");
             return;
         }
 
+        // Get the updated message from the input field
         String message = reminderMessageField.getText();
         if (message.isEmpty()) {
             showAlert("Error", "Reminder message cannot be empty.");
             return;
         }
 
-        LocalDate reminderDate = reminderDatePicker.getValue();
-        if (reminderDate == null) {
-            showAlert("Error", "Please select a date for the reminder.");
-            return;
-        }
-        
-        // Check if the reminder date is valid
-        if (!isReminderDateValid(selectedTask, reminderDate)) {
+        // Get the reminder type from the combo box
+        String reminderType = reminderDateComboBox.getValue();
+        if (reminderType == null) {
+            showAlert("Error", "Please select a reminder type.");
             return;
         }
 
+        // Calculate the reminder date based on the reminder type
+        LocalDate reminderDate = null;
+        switch (reminderType) {
+            case "One day before deadline":
+                if (taskWithReminder.getDeadline() == null) {
+                    showAlert("Error", "Task must have a deadline for this reminder type.");
+                    return;
+                }
+                reminderDate = taskWithReminder.getDeadline().minusDays(1);
+                break;
+            case "One week before deadline":
+                if (taskWithReminder.getDeadline() == null) {
+                    showAlert("Error", "Task must have a deadline for this reminder type.");
+                    return;
+                }
+                reminderDate = taskWithReminder.getDeadline().minusWeeks(1);
+                break;
+            case "One month before deadline":
+                if (taskWithReminder.getDeadline() == null) {
+                    showAlert("Error", "Task must have a deadline for this reminder type.");
+                    return;
+                }
+                reminderDate = taskWithReminder.getDeadline().minusMonths(1);
+                break;
+            case "Specific date":
+                reminderDate = reminderDatePicker.getValue();
+                if (reminderDate == null) {
+                    showAlert("Error", "Please select a specific date for the reminder.");
+                    return;
+                }
+                break;
+            default:
+                showAlert("Error", "Invalid reminder type.");
+                return;
+        }
+
+        // Check if the reminder date is valid
+        if (!isReminderDateValid(taskWithReminder, reminderDate)) {
+            return;
+        }
+
+        // Update the reminder's message and date
         selectedReminder.setMessage(message);
         selectedReminder.setDate(reminderDate);
+
+        // Update the UI
         updateUI();
     }
     
@@ -645,37 +789,5 @@ public class MainController {
         reminderMessageField.clear();
         reminderDateComboBox.setValue("One day before deadline");
         reminderDatePicker.setValue(null);
-    }
-    
-    // -------------------------- OTHERS --------------------------
-
-    private void showAlert(String title, String content) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setContentText(content);
-        alert.showAndWait();
-    }
-    
-    public TaskManager getTaskManager() {
-        return taskManager;
-    }
-    
-    private void updateSummary() {
-        List<Task> tasks = taskManager.getTasks();
-        
-        int totalTasks = tasks.size();
-        int completedTasks = (int) tasks.stream().filter(t -> "Completed".equals(t.getStatus())).count();
-        int delayedTasks = (int) tasks.stream().filter(t -> "Delayed".equals(t.getStatus())).count();
-        
-        LocalDate today = LocalDate.now();
-        int dueSoonTasks = (int) tasks.stream()
-            .filter(t -> t.getDeadline() != null && !t.getDeadline().isBefore(today) && t.getDeadline().isBefore(today.plusDays(7)))
-            .count();
-
-        // Update of Labels
-        totalTasksLabel.setText(String.valueOf(totalTasks));
-        completedTasksLabel.setText(String.valueOf(completedTasks));
-        delayedTasksLabel.setText(String.valueOf(delayedTasks));
-        dueSoonTasksLabel.setText(String.valueOf(dueSoonTasks));
     }
 }

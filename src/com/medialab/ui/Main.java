@@ -10,7 +10,6 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-// import javafx.stage.WindowEvent;
 
 import java.util.List;
 
@@ -27,14 +26,19 @@ public class Main extends Application {
         
         // Get the controller and set initial data
         mainController = loader.getController();
-        dataManager.loadData(mainController.getTaskManager()); // Load both tasks and categories
+        dataManager.loadData(mainController.getTaskManager());
         
         // Force UI Update After Loading Data
         mainController.updateUI();
-
+        
+        /*
+         *  First, Update Tasks whose deadlines have passed -> to Delayed
+         *  Then, show Popup with the number of currently Delayed Tasks.
+         */
+        mainController.checkAndUpdateDelayedTasks();
+        
         // Save tasks and categories when the application closes
         primaryStage.setOnCloseRequest(_ -> onAppClose());
-
         primaryStage.show();
     }
 

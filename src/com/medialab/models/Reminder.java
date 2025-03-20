@@ -20,6 +20,9 @@ public class Reminder {
     public void setDate(LocalDate date) { this.date = date; }
     public void setMessage(String message) { this.message = message; }
 
+    /**
+     * Display of Reminders in the following form: "2025-02-07: reminder message"
+     */
     @Override
     public String toString() {
         return (date + ": " + message);
