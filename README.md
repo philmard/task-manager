@@ -47,13 +47,14 @@ All task-related information is stored in a **single JSON file (`data.json`)** w
     {
       "title": "task1",
       "status": "Open",
-      "priority": "priority1",
+      "priority": "priority3",
       "reminders": []
     },
     {
       "title": "task3",
       "status": "Open",
-      "priority": "priority2",
+      "priority": "category1",
+      "category": "priority2",
       "deadline": "2025-02-08",
       "reminders": [
         {
@@ -69,7 +70,8 @@ All task-related information is stored in a **single JSON file (`data.json`)** w
   ],
   "priorities": [
     { "title": "Default" },
-    { "title": "priority2" }
+    { "title": "priority2" },
+    { "title": "priority3" }
   ]
 }
 ```
